@@ -4,7 +4,8 @@ import type React from "react";
 
 import { useEffect, useState } from "react";
 import dados, { TarefaInterface } from "@/data";
-import Cabecalho from "@/componentes/Cabecalhot";
+import Cabecalho from "@/componentes/Cabecalho";
+import ModalTarefa from "@/componentes/ModalTarefa";
 
 interface TarefaProps {
 	titulo: string;
@@ -56,11 +57,21 @@ const Tarefas: React.FC<TareafasProps> = ({ dados }) => {
 };
 
 const Home = () => {
-	const tarefas: TarefaInterface[] = dados;
+	const [tarefas, setTarefas] = useState<TarefaInterface[]>(dados);
+
+	const adicionarTarefa = (titulo: string) => {
+		const novaTarefa: TarefaInterface = {
+			id: tarefas.length + 1,
+			title: titulo,
+			completed: false,
+		};
+		setTarefas([...tarefas, novaTarefa]);
+	};
 
 	return (
 		<div className="container mx-auto p-4">
 			<Cabecalho />
+			<ModalTarefa adicionarTarefa={adicionarTarefa} />
 			<Tarefas dados={tarefas} />
 		</div>
 	);
